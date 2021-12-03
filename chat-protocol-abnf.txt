@@ -1,1 +1,7 @@
-abnf file
+; Chat protocol abnf
+; is comment
+
+fubar = fu / bar
+
+fu = "f"
+bar = "b"
