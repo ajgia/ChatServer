@@ -5,3 +5,16 @@ fubar = fu / bar
 
 fu = "f"
 bar = "b"
+userid                          =3DIGIT
+type                            =DIGIT"-"DIGIT 
+sender                          ="sender"
+receiver                        ="receiver"
+users                           =sender":"userid" ""receiver"":"userid
+hour                            =2DIGIT
+minute                          =2DIGIT
+second                          =2DIGIT
+time                            =hour ":" minute ":" second
+day                             =2DIGIT
+month                           =2DIGIT
+year                            =4DIGIT
+date                            =year"-"month"-"day
