@@ -1,0 +1,39 @@
+; user
+userid                          =DQUOTE 3DIGIT DQUOTE
+sender-code                     = "1"
+status-code                     = 1*2("1" / "2")
+type                            =DQUOTE sender-code"-"status-code DQUOTE
+type-name                       =DQUOTE "type" DQUOTE
+type-pair                       = type-name name-separator type
+users                           = start-object sender name-separator userid "," receiver name-separator 
+users-name                      =DQUOTE "users" DQUOTE
+users-pair                      =users-name name-separator users 
+sender                          =DQUOTE "sender" DQUOTE
+receiver                        =DQUOTE "receiver" DQUOTE
+
+; timestamp
+hour                            =2DIGIT
+minute                          =2DIGIT
+second                          =2DIGIT
+time                            =hour ":" minute ":" second
+day                             =2DIGIT
+month                           =2DIGIT
+year                            =4DIGIT
+date                            =year"-"month"-"day
+timestamp                       =DQUOTE date":"time DQUOTE
+timestamp-name                  =DQUOTE "timestamp" DQUOTE
+timestamp-pair                  =timestamp-name name-separator timestamp
+
+;message
+message-recipient               =userid
+message-number                  =1*DIGIT
+message-recipient-name          = DQUOTE "messageRecipient" DQUOTE
+message-number-name             = DQUOTE "messageNumberInConversation" DQUOTE
+message-recipient-pair          = message-recipient-name name-separator userid 
+message-number-pair             = message-number-name name-separator message-number
+start-object                    = "{"
+end-object                      = "}"
+name-separator                  = ":"
+member-separator                = ","
+object                          = start-object required-members end-object
+required-members                = type-pair ","  users-pair  "," timestamp-pair "," message-recipient-pair "," message-number-pair
