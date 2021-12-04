@@ -5,11 +5,17 @@ fubar = fu / bar
 
 fu = "f"
 bar = "b"
+; user
 userid                          =3DIGIT
-type                            =DIGIT"-"DIGIT 
+sender-code                     = "1"
+status-code                     = 1*2("1" / "2")
 sender                          ="sender"
+type                            ="{" DQUOTE sender-code"-"status-code DQUOTE"}"
+type-pair                       = "type" ":" type
 receiver                        ="receiver"
-users                           =sender":"userid" ""receiver"":"userid
+users                           =DQUOTE sender":"userid" ""receiver"":"userid DQUOTE
+users-pair                      ="users" ":"  
+; timestamp
 hour                            =2DIGIT
 minute                          =2DIGIT
 second                          =2DIGIT
@@ -18,3 +24,6 @@ day                             =2DIGIT
 month                           =2DIGIT
 year                            =4DIGIT
 date                            =year"-"month"-"day
+timestamp                       =date" : "time
+message-recipient               =userid
+message-number                  =1*DIGIT
