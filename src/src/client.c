@@ -24,13 +24,36 @@ struct application_settings
     struct dc_setting_uint16 *port;
 };
 
-
+/**
+ * @brief Create a settings object
+ * 
+ * @param env 
+ * @param err 
+ * @return struct dc_application_settings* 
+ */
 static struct dc_application_settings *create_settings(const struct dc_posix_env *env, struct dc_error *err);
-
 static int
 destroy_settings(const struct dc_posix_env *env, struct dc_error *err, struct dc_application_settings **psettings);
-
 static int run(const struct dc_posix_env *env, struct dc_error *err, struct dc_application_settings *settings);
+
+/**
+ * @brief Starts client FSM
+ * 
+ * @param env 
+ * @param err 
+ */
+void startFSM(const struct dc_posix_env *env, struct dc_error *err);
+/**
+ * @brief Reads data from file descriptor into destination
+ *
+ * @param env
+ * @param err
+ * @param fd
+ * @param size
+ * @return 0 if successful
+ */
+int receive_data(const struct dc_posix_env *env, struct dc_error *err, int fd,
+                 char *dest, size_t bufSize);
 
 int main(int argc, char *argv[])
 {
