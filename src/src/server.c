@@ -15,6 +15,15 @@
 #include <getopt.h>
 #include <unistd.h>
 
+/**
+ * @brief Server information for processing FSM. 
+ * TODO: Must contain map of userIds and file descriptors
+ * 
+ */
+struct server
+{
+    int client_socket_fd;
+};
 
 struct application_settings
 {
@@ -29,34 +38,19 @@ struct application_settings
 };
 
 static struct dc_application_settings *create_settings(const struct dc_posix_env *env, struct dc_error *err);
-
 static int
 destroy_settings(const struct dc_posix_env *env, struct dc_error *err, struct dc_application_settings **psettings);
-
 static int run(const struct dc_posix_env *env, struct dc_error *err, struct dc_application_settings *settings);
-
 static void signal_handler(int signnum);
-
 static void do_create_settings(const struct dc_posix_env *env, struct dc_error *err, void *arg);
-
 static void do_create_socket(const struct dc_posix_env *env, struct dc_error *err, void *arg);
-
 static void do_set_sockopts(const struct dc_posix_env *env, struct dc_error *err, void *arg);
-
 static void do_bind(const struct dc_posix_env *env, struct dc_error *err, void *arg);
-
 static void do_listen(const struct dc_posix_env *env, struct dc_error *err, void *arg);
-
 static void do_setup(const struct dc_posix_env *env, struct dc_error *err, void *arg);
-
 static bool do_accept(const struct dc_posix_env *env, struct dc_error *err, int *client_socket_fd, void *arg);
-
 static void do_shutdown(const struct dc_posix_env *env, struct dc_error *err, void *arg);
-
 static void do_destroy_settings(const struct dc_posix_env *env, struct dc_error *err, void *arg);
-
-void echo(const struct dc_posix_env *env, struct dc_error *err, int client_socket_fd);
-
 /*
 static void write_displayer(const struct dc_posix_env *env, struct dc_error *err, const uint8_t *data, size_t count,
                             size_t file_position, void *arg);
@@ -64,6 +58,31 @@ static void write_displayer(const struct dc_posix_env *env, struct dc_error *err
 static void read_displayer(const struct dc_posix_env *env, struct dc_error *err, const uint8_t *data, size_t count,
                            size_t file_position, void *arg);
 */
+
+
+/**
+ * @brief Reads data from client_socket_fd, writes to standard out with dcdump, and writes data back to client
+ * 
+ * @param env 
+ * @param err 
+ * @param client_socket_fd 
+ */
+void echo(const struct dc_posix_env *env, struct dc_error *err, int client_socket_fd);
+
+/**
+ * @brief Starts inner processing FSM 
+ * 
+ * @param env 
+ * @param err 
+ */
+void startProcessingFSM(const struct dc_posix_env *env, struct dc_error *err, int *client_socket_fd);
+/**
+ * @brief Free all memory associated with server struct
+ * 
+ * @param server 
+ */
+void freeServerStruct(struct server *server);
+
 
 // NOLINTNEXTLINE(cppcoreguidelines-avoid-non-const-global-variables)
 static volatile sig_atomic_t exit_signal = 0;
@@ -351,12 +370,15 @@ static bool do_accept(const struct dc_posix_env *env, struct dc_error *err, int 
     }
     else
     {
-        // start processing fsm
-        display("start chat server inner fsm");
-        echo(env, err, client_socket_fd);
+        startProcessingFSM(env, err, client_socket_fd);
     }
 
     return ret_val;
+}
+
+void startProcessingFSM(const struct dc_posix_env *env, struct dc_error *err, int *client_socket_fd) {    
+    display("Starting chat server inner FSM");
+    echo(env, err, *client_socket_fd);
 }
 
 void echo(const struct dc_posix_env *env, struct dc_error *err, int client_socket_fd)
