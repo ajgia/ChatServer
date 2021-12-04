@@ -1,0 +1,25 @@
+{
+    "configurations": [
+        
+        {
+            "type": "gdb",
+            "request": "launch",
+            "name": "GDB",
+            "program": "${workspaceFolder}/cmake-build-debug/src/cursesClient",
+            "stopOnEntry": true
+        },
+        {
+            "name": "(lldb) Launch",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/cmake-build-debug/src/cursesClient",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${fileDirname}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "lldb"
+        },
+
+    ]
+}

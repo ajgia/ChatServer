@@ -53,3 +53,7 @@ dkms.conf
 
 # DS_Store
 .DS_store
+
+# Build Directories
+*/cmake-build-debug
+*/build
